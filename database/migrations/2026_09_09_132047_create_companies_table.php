@@ -6,20 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->unique()->constrained()->cascadeOnDelete();
+            $table->string('name');
+            $table->string('contact_name')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->string('bank_name')->nullable();
+            $table->string('bank_account_holder')->nullable();
+            $table->string('bank_account_number')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('companies');
