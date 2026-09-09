@@ -76,4 +76,12 @@ class Product extends Model
     {
         return $query->where('stock', '<=', 0);
     }
+    public function stockStatus(): string
+{
+    return match (true) {
+        $this->isOutOfStock() => 'out_of_stock',
+        $this->isLowStock() => 'low_stock',
+        default => 'in_stock',
+    };
+}
 }
