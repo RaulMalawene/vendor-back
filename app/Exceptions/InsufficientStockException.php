@@ -10,6 +10,7 @@ class InsufficientStockException extends Exception
     public function __construct(
         public readonly int $available,
         public readonly int $requested,
+        public readonly ?string $product = null,
         string $message = 'Stock insuficiente para esta operação.'
     ) {
         parent::__construct($message);
@@ -17,10 +18,11 @@ class InsufficientStockException extends Exception
 
     public function render(): JsonResponse
     {
-        return response()->json([
+        return response()->json(array_filter([
             'message' => $this->getMessage(),
+            'product' => $this->product,
             'available' => $this->available,
             'requested' => $this->requested,
-        ], 422);
+        ], fn ($value) => ! is_null($value)), 422);
     }
 }
