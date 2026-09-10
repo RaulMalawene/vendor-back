@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\OrderController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -19,4 +21,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/inventory', [InventoryController::class, 'index']);
     Route::post('/products/{product}/stock', [InventoryController::class, 'adjust']);
     Route::get('/products/{product}/stock-movements', [InventoryController::class, 'movements']);
+    
+    Route::get('/customers', [CustomerController::class, 'index']);
+    Route::post('/customers', [CustomerController::class, 'store']);
+
+    Route::get('/orders', [OrderController::class, 'index']);
+    Route::post('/orders', [OrderController::class, 'store']);
+    Route::get('/orders/{order}', [OrderController::class, 'show']);
+    Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus']);
 });
