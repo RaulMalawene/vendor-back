@@ -22,8 +22,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/products/{product}/stock', [InventoryController::class, 'adjust']);
     Route::get('/products/{product}/stock-movements', [InventoryController::class, 'movements']);
     
-    Route::get('/customers', [CustomerController::class, 'index']);
-    Route::post('/customers', [CustomerController::class, 'store']);
+    Route::apiResource('customers', CustomerController::class);
 
     Route::get('/orders', [OrderController::class, 'index']);
     Route::post('/orders', [OrderController::class, 'store']);

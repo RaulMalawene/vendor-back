@@ -28,6 +28,13 @@ class CategoryController extends Controller
         return (new CategoryResource($category))->response()->setStatusCode(201);
     }
 
+    public function show(Request $request, string $category): CategoryResource
+    {
+        $model = $request->user()->categories()->withCount('products')->findOrFail($category);
+
+        return new CategoryResource($model);
+    }
+
     public function update(UpdateCategoryRequest $request, string $category): CategoryResource
     {
         $model = $request->user()->categories()->findOrFail($category);
