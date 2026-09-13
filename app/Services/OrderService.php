@@ -7,14 +7,13 @@ use App\Enums\StockMovementType;
 use App\Exceptions\InvalidOrderStatusTransitionException;
 use App\Models\Order;
 use App\Models\User;
+use App\Notifications\NewOrderReceived;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class OrderService
 {
-    public function __construct(private readonly StockService $stockService)
-    {
-    }
+    public function __construct(private readonly StockService $stockService) {}
 
     public function create(User $user, int $customerId, array $items): Order
     {
@@ -31,7 +30,7 @@ class OrderService
             ]);
 
             $order->update([
-                'number' => 'ORD-' . now()->year . '-' . str_pad((string) $order->id, 5, '0', STR_PAD_LEFT),
+                'number' => 'ORD-'.now()->year.'-'.str_pad((string) $order->id, 5, '0', STR_PAD_LEFT),
             ]);
 
             $total = 0;
@@ -61,6 +60,8 @@ class OrderService
                 'to_status' => OrderStatus::Pending,
                 'note' => 'Encomenda criada.',
             ]);
+
+            $user->notify(new NewOrderReceived($order));
 
             return $order;
         });
@@ -103,7 +104,7 @@ class OrderService
                 $product,
                 StockMovementType::Out,
                 $item->quantity,
-                'Confirmação da encomenda ' . $order->number,
+                'Confirmação da encomenda '.$order->number,
                 $user,
                 $order,
             );
