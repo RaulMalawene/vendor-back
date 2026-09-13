@@ -34,7 +34,7 @@ class NewOrderReceived extends Notification
         $order = $this->order->loadMissing('customer', 'items');
 
         $message = (new MailMessage)
-            ->subject('Nova encomenda recebida — '.$order->number)
+            ->subject('Nova encomenda recebida - '.$order->number)
             ->greeting('Olá, '.$notifiable->name.'!')
             ->line('Acabou de receber uma nova encomenda na sua loja.')
             ->line('Número da encomenda: '.$order->number)
