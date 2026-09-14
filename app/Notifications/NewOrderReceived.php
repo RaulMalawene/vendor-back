@@ -42,6 +42,6 @@ class NewOrderReceived extends Notification
             ->line('Número de artigos: '.$order->items->count())
             ->line('Total: '.number_format((float) $order->total, 2, ',', '.'));
 
-        return $message->action('Ver encomenda', config('app.frontend_url').'/orders/'.$order->id);
+        return $message->action('Ver encomenda', rtrim(config('app.frontend_url'), '/').'/encomendas/'.$order->id);
     }
 }
